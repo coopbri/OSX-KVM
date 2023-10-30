@@ -1,3 +1,10 @@
+# OSX-KVM
+
+This is a fork of https://github.com/kholia/OSX-KVM with some important changes:
+
+- GitHub Issues and Discussions are enabled on this repository
+  - Consequently, there is no commercial support unlike upstream; support is shifted left to the community
+
 ### Note
 
 This `README.md` documents the process of creating a `Virtual Hackintosh`
@@ -6,60 +13,54 @@ system.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
-:green_heart: Looking for **commercial** support with this stuff? I am [available
-over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**. Note: Project sponsors get access to the `Private OSX-KVM` repository, and direct support.
-
 Struggling with `Content Caching` stuff? We can help.
 
 Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
 
-
 ### Contributing Back
 
 This project can always use your help, time and attention. I am looking for
 help (pull-requests!) with the following work items:
 
-* Documentation around running macOS on popular cloud providers (Hetzner, GCP,
+- Documentation around running macOS on popular cloud providers (Hetzner, GCP,
   AWS). See the `Is This Legal?` section and associated references.
 
-* Document (share) how you use this project to build + test open-source
+- Document (share) how you use this project to build + test open-source
   projects / get your stuff done.
 
-* Document how to use this project for XNU kernel debugging and development.
+- Document how to use this project for XNU kernel debugging and development.
 
-* Document the process to launch a bunch of headless macOS VMs (build farm).
+- Document the process to launch a bunch of headless macOS VMs (build farm).
 
-* Document usage of [munki](https://github.com/munki/munki) to deploy software
+- Document usage of [munki](https://github.com/munki/munki) to deploy software
   to such a `build farm`.
 
-* Enable VNC + SSH support out of the box or more easily.
+- Enable VNC + SSH support out of the box or more easily.
 
-* Robustness improvements are always welcome!
+- Robustness improvements are always welcome!
 
-* (Not so) crazy idea - automate the macOS installation via OpenCV.
-
+- (Not so) crazy idea - automate the macOS installation via OpenCV.
 
 ### Requirements
 
-* A modern Linux distribution. E.g. Ubuntu 22.04 LTS 64-bit or later.
+- A modern Linux distribution. E.g. Ubuntu 22.04 LTS 64-bit or later.
 
-* QEMU >= 6.2.0
+- QEMU >= 6.2.0
 
-* A CPU with Intel VT-x / AMD SVM support is required (`grep -e vmx -e svm /proc/cpuinfo`)
+- A CPU with Intel VT-x / AMD SVM support is required (`grep -e vmx -e svm /proc/cpuinfo`)
 
-* A CPU with SSE4.1 support is required for >= macOS Sierra
+- A CPU with SSE4.1 support is required for >= macOS Sierra
 
-* A CPU with AVX2 support is required for >= macOS Mojave
+- A CPU with AVX2 support is required for >= macOS Mojave
 
 Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine.
 
-
 ### Installation Preparation
 
-* Install QEMU and other packages.
+- Install QEMU and other packages.
 
   ```
   sudo apt-get install qemu uml-utilities virt-manager git \
@@ -69,7 +70,7 @@ processors work just fine.
 
   This step may need to be adapted for your Linux distribution.
 
-* Clone this repository on your QEMU system. Files from this repository are
+- Clone this repository on your QEMU system. Files from this repository are
   used in the following steps.
 
   ```
@@ -88,7 +89,7 @@ processors work just fine.
 
   This repository uses rebase based workflows heavily.
 
-* KVM may need the following tweak on the host machine to work.
+- KVM may need the following tweak on the host machine to work.
 
   ```
   sudo modprobe kvm; echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
@@ -102,7 +103,7 @@ processors work just fine.
   sudo cp kvm_amd.conf /etc/modprobe.d/kvm.conf  # for amd boxes only
   ```
 
-* Add user to the `kvm` and `libvirt` groups (might be needed).
+- Add user to the `kvm` and `libvirt` groups (might be needed).
 
   ```
   sudo usermod -aG kvm $(whoami)
@@ -112,7 +113,7 @@ processors work just fine.
 
   Note: Re-login after executing this command.
 
-* Fetch macOS installer.
+- Fetch macOS installer.
 
   ```
   ./fetch-macOS-v2.py
@@ -143,13 +144,13 @@ processors work just fine.
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
   versions of macOS.
 
-* Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
+- Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
   ```
   dmg2img -i BaseSystem.dmg BaseSystem.img
   ```
 
-* Create a virtual HDD image where macOS will be installed. If you change the
+- Create a virtual HDD image where macOS will be installed. If you change the
   name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts
   will need to be updated to point to the new image name.
 
@@ -159,8 +160,7 @@ processors work just fine.
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
 
-* Now you are ready to install macOS 🚀
-
+- Now you are ready to install macOS 🚀
 
 ### Installation
 
@@ -207,7 +207,6 @@ processors work just fine.
 
   - Launch `virt-manager` and start the `macOS` virtual machine.
 
-
 ### Headless macOS
 
 - Use the provided [boot-macOS-headless.sh](./boot-macOS-headless.sh) script.
@@ -215,7 +214,6 @@ processors work just fine.
   ```
   ./boot-macOS-headless.sh
   ```
-
 
 ### Setting Expectations Right
 
@@ -232,19 +230,17 @@ if you are able to fund this area of work.
 It is possible to have 'beyond-native-apple-hw' performance but it does require
 work, patience, and a bit of luck (perhaps?).
 
-
 ### Post-Installation
 
-* See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
+- See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
 
-* To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
+- To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
 
-* Need a different resolution? Check out the [notes](notes.md#change-resolution-in-opencore) included in this repository.
+- Need a different resolution? Check out the [notes](notes.md#change-resolution-in-opencore) included in this repository.
 
-* Trouble with iMessage? Check out the [notes](notes.md#trouble-with-imessage) included in this repository.
+- Trouble with iMessage? Check out the [notes](notes.md#trouble-with-imessage) included in this repository.
 
-* Highly recommended macOS tweaks - https://github.com/sickcodes/osx-optimizer
-
+- Highly recommended macOS tweaks - https://github.com/sickcodes/osx-optimizer
 
 ### Is This Legal?
 
@@ -254,15 +250,13 @@ Please review the ['Legality of Hackintoshing' documentation bits from Dortania'
 
 Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/) on the legal aspects involved in running macOS under QEMU/KVM.
 
-You may also find [this 'Announcing Amazon EC2 Mac instances for macOS' article](https://aws.amazon.com/about-aws/whats-new/2020/11/announcing-amazon-ec2-mac-instances-for-macos/
-) interesting.
+You may also find [this 'Announcing Amazon EC2 Mac instances for macOS' article](https://aws.amazon.com/about-aws/whats-new/2020/11/announcing-amazon-ec2-mac-instances-for-macos/) interesting.
 
 Note: It is your responsibility to understand, and accept (or not accept) the
 Apple EULA.
 
 Note: This is not legal advice, so please make the proper assessments yourself
 and discuss with your lawyers if you have any concerns (Text credit: Dortania)
-
 
 ### Motivation
 
